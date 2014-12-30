@@ -12,17 +12,17 @@ public class Gene {
 
 	@Getter
 	@Setter
-	private int x;
+	private double x;
 	
 	@Getter
 	@Setter
-	private int y;
+	private double y;
 	
 	@Getter
 	@Setter
-	private float weight;
+	private double weight;
 	
-	public Gene(int x, int y, float weight) {
+	public Gene(double x, double y, double weight) {
 		this.x = x;
 		this.y = y;
 		this.weight = weight;

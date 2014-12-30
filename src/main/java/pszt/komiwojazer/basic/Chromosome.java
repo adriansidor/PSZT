@@ -1,5 +1,6 @@
 package pszt.komiwojazer.basic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
@@ -32,8 +33,12 @@ public class Chromosome {
 	 */
 	public double fitnessFunction() {
 		double F = 0;
-		for(int i = 0; i<genes.size()-1; i++) {
-			F += distance(genes.get(i), genes.get(i+1)) * S * (1 + P*weight(i+1));
+		List<Gene> genes = new ArrayList<Gene>();
+		genes.add(new Gene(0,0,0)); //dodanie punktu startowego
+		genes.addAll(this.genes);
+		genes.add(new Gene(0,0,0)); //dodanie punktu koncowego
+		for(int i = 0; i<genes.size()-1; i++) { 
+			F += distance(genes.get(i), genes.get(i+1)) * S * (1 + P*weight(i));
 		}
 		return F;
 	}
