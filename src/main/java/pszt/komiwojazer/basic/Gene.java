@@ -28,6 +28,11 @@ public class Gene {
 		this.weight = weight;
 	}
 	
-	
-	
+	  public boolean equals(Object otherObiekt) {
+		    if (this == otherObiekt) return true;
+		    if (!( this.getClass().equals(otherObiekt.getClass()) )) return false;
+		    
+		    Gene otherGene = (Gene) otherObiekt;
+		    return ( otherGene.weight == this.weight && otherGene.x == this.x && otherGene.y == this.y );
+	  }
 }

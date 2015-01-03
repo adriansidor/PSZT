@@ -29,7 +29,7 @@ public class FitnessFunctionTest {
 		//genes.add(g5);
 		Chromosome c = new Chromosome();
 		c.setGenes(genes);
-		double f = c.fitnessFunction();
+		double f = c.getFitness();
 		assertEquals(1.818, f, 0);
 	}
 
