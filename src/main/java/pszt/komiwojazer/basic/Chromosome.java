@@ -27,7 +27,7 @@ public class Chromosome implements Comparable<Chromosome> {
 
 	
 	/*
-	 * ZuÅ¼ycie paliwa (na 1 km) bez obciazenia
+	 * Zużycie paliwa (na 1 km) bez obciazenia
 	 */
 	private static double S = 0.1;
 	

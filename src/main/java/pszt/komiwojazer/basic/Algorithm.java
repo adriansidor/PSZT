@@ -17,10 +17,46 @@ import java.util.Random;
 
 public class Algorithm {
 	/*
-	 * Liczba punktów dostawy
+	 * genes - lista punktów dostawy
+	 * fuelConsumption - spalanie pojazdu [l/km] - domyślnie 0,1 (domyślne wartości - wyświetlane początkowo w UI)
+	 * loadFactor - współczynnik zwiększania spalania spowodowanego załadunkiem – domyślnie 0,01 (1/kg)
+	 * populationSize - liczebność początkowej populacji – domyślnie równa liczbie punktów dostawy
+	 * maxIterationsWithoutImprovement - warunek końcowy - maksymalna liczba iteracji bez poprawy najlepszego rozwiązania – domyślnie 5
+	 * mutationProbability - prawdopodobieństwo mutacji – domyślnie 0,02
+	 * parentPart - część rodziców brana pod uwagę przy reprodukcji – domyślnie 0.8 – całość
 	 */
-	private static int N = 2;
-
+	public Chromosome findSolution(List <Gene> genes, double fuelConsumption, double loadFactor, int populationSize, int maxIterationsWithoutImprovement, double mutationProbability, double parentPart  ) {
+		List<Chromosome> population = createPopulation(genes, populationSize);
+		int endConditionCounter = 0;
+		int i = 0;
+		Chromosome bestChromosome = Collections.min(population);
+System.out.println("Najlepszy na początku: " + bestChromosome.getFitness());
+		while (endConditionCounter < maxIterationsWithoutImprovement)
+		{
+			++i;
+			population = selection(population, populationSize);
+			List<Pair<Chromosome, Chromosome>> pairs = createParents(population, parentPart);
+			for (Pair<Chromosome, Chromosome> pair : pairs)
+			{
+				Chromosome child = crossover(pair.getFirst(), pair.getSecond());
+				Random r = new Random();
+				if (r.nextDouble() < mutationProbability )
+					child.mutation();
+				population.add(child);
+			}
+			
+			Chromosome newBest = Collections.min(population);
+			if(bestChromosome.getFitness() > newBest.getFitness())
+			{
+				bestChromosome = newBest;
+				endConditionCounter = 0;
+				System.out.println("Najlepszy po " + i + "iteracji : " + bestChromosome.getFitness());
+			}
+			else 
+				++endConditionCounter;
+		}
+		return bestChromosome;
+	}
 
 	/*
 	 * Krzyzowanie - PMX 
@@ -28,6 +64,8 @@ public class Algorithm {
 	public Chromosome crossover(Chromosome c1, Chromosome c2) {
 		Random r = new Random();
 		Chromosome child = new Chromosome();
+		int N = c1.getGenes().size();
+
 		Gene[] childGenes = new Gene[N];
 		int start = r.nextInt(N-1); //TEST 3	
 		int end = r.nextInt(N-start-1)+start+1; //TEST 6
@@ -132,11 +170,10 @@ public class Algorithm {
 	 * @param genes lista genow
 	 * @return
 	 */
-	public List<Chromosome> createPopulation(List<Gene> genes) {
-		int n = (int) Math.pow(genes.size(), 2);
-		List<Chromosome> population = new ArrayList<Chromosome>(n);
+	public List<Chromosome> createPopulation(List<Gene> genes, int populationSize) {
+		List<Chromosome> population = new ArrayList<Chromosome>(populationSize);
 		Random r = new Random();
-		for(int a = 0; a<n; a++) {
+		for(int a = 0; a<populationSize; a++) {
 			Chromosome chromosome = new Chromosome();
 			List<Gene> copy = copy(genes);
 			List<Gene> newGenes = new ArrayList<Gene>(copy.size());
@@ -151,6 +188,19 @@ public class Algorithm {
 
 		return population;
 	}
-	
+
+	/**
+	 * dobór rodziców w pary 
+	 */
+	public List<Pair<Chromosome, Chromosome>> createParents(List<Chromosome> chromosomes, double parentPart) {
+
+		Collections.shuffle( chromosomes );
+		List<Pair<Chromosome, Chromosome>> result = new ArrayList<Pair<Chromosome, Chromosome>>( );
+		for (int i = 0; i < 0.5*chromosomes.size()*parentPart; ++i)
+			result.add(new Pair<Chromosome, Chromosome>(chromosomes.get(2*i), chromosomes.get(2*i+1)));
+
+		return result;
+	}
+
 	
 }
