@@ -29,12 +29,12 @@ public class Chromosome implements Comparable<Chromosome> {
 	/*
 	 * Zużycie paliwa (na 1 km) bez obciazenia
 	 */
-	private static double S = 0.1;
+	public static double S = 0.1;
 	
 	/*
 	 * Wspolczynnik spalania
 	 */
-	private static double P = 0.01;
+	public static double P = 0.01;
 	
 	/**
 	 * Oblicza wartosc przystosowania

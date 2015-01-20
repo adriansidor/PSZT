@@ -20,17 +20,22 @@ public class Algorithm {
 	 * genes - lista punktów dostawy
 	 * fuelConsumption - spalanie pojazdu [l/km] - domyślnie 0,1 (domyślne wartości - wyświetlane początkowo w UI)
 	 * loadFactor - współczynnik zwiększania spalania spowodowanego załadunkiem – domyślnie 0,01 (1/kg)
-	 * populationSize - liczebność początkowej populacji – domyślnie równa liczbie punktów dostawy
-	 * maxIterationsWithoutImprovement - warunek końcowy - maksymalna liczba iteracji bez poprawy najlepszego rozwiązania – domyślnie 5
+	 * populationSize - liczebność początkowej populacji – domyślnie równa liczbie punktów dostawy^2
+	 * maxIterationsWithoutImprovement - warunek końcowy - maksymalna liczba iteracji bez poprawy najlepszego rozwiązania – domyślnie 30
 	 * mutationProbability - prawdopodobieństwo mutacji – domyślnie 0,02
-	 * parentPart - część rodziców brana pod uwagę przy reprodukcji – domyślnie 0.8 – całość
+	 * parentPart - część rodziców brana pod uwagę przy reprodukcji – domyślnie 0.8
 	 */
 	public Chromosome findSolution(List <Gene> genes, double fuelConsumption, double loadFactor, int populationSize, int maxIterationsWithoutImprovement, double mutationProbability, double parentPart  ) {
+		Chromosome.S = fuelConsumption;
+		Chromosome.P = loadFactor;
+
 		List<Chromosome> population = createPopulation(genes, populationSize);
 		int endConditionCounter = 0;
 		int i = 0;
 		Chromosome bestChromosome = Collections.min(population);
-System.out.println("Najlepszy na początku: " + bestChromosome.getFitness());
+		
+		System.out.println("Najlepszy na początku: " + bestChromosome.getFitness());
+		
 		while (endConditionCounter < maxIterationsWithoutImprovement)
 		{
 			++i;
@@ -50,7 +55,7 @@ System.out.println("Najlepszy na początku: " + bestChromosome.getFitness());
 			{
 				bestChromosome = newBest;
 				endConditionCounter = 0;
-				System.out.println("Najlepszy po " + i + "iteracji : " + bestChromosome.getFitness());
+				System.out.println("Najlepszy po " + i + " iteracji : " + bestChromosome.getFitness());
 			}
 			else 
 				++endConditionCounter;
